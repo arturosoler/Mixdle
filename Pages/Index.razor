@@ -1,0 +1,72 @@
+﻿@page "/"
+
+<PageTitle>Index</PageTitle>
+ <div class="row justify-content-md-center">
+      <div class="col col-xl-3 col-lg-4 col-md-5 col-sm-12">
+
+
+<h1>MIXDLE</h1>
+<div class="@(ayuda?"d-none":"")">
+@if (_seleccion!=null)
+{
+
+<p>
+    Palabras encontradas: @_seleccion.ContadorPalabras Errores: @_seleccion.ContadorErrores 
+</p>
+<div class="@(_seleccion.Aciertos.Count==6?"d-none":"")">
+<table>
+    <tbody>
+    @for(var iLinea=0; iLinea<6;++iLinea)
+    {
+        <tr>
+            @for (var iCol = 0; iCol < 6; ++iCol)
+            {
+                int col=iCol;
+                int lin = iLinea;
+                var cuadro = _seleccion.Cuadros[col][lin];
+                 <td>
+                    <button class="@cuadro.ClaseCSS()" 
+                                disabled="@cuadro.Disabled()" 
+                                @onclick="()=>_seleccion.Click(col,lin)">
+                                @cuadro.Letra
+                    </button>
+
+                </td>
+            }
+        </tr>
+    }
+
+    </tbody>
+</table>
+</div>
+<ol class="list-unstyled">
+    @foreach (var pal in _seleccion.Aciertos)
+        {
+            <li class="text-success">@pal 
+                <a href="@(string.Format("https://dle.rae.es/{0}",pal))" target="_blank">
+                    Ver rae
+                </a>
+            </li>
+    }
+</ol>
+}
+    <p><a @onclick="()=>ayuda=true" class="text-info">¿Como funciona? ¿Por qué jugar?</a></p>
+</div>
+<div class="@(ayuda?"":"d-none")">
+        <p>Otro juego basado en Wordle, un cuadrado dividido en seis filas y columnas con un desafío que se renueva diariamente.</p>
+        <p>En Mixdle tenemos seis palabras de seis letras que pueden leerse en el cuadro en sentido horizontal, ...pero ¡hemos barajado las letras de las columnas!</p>
+        <p>El objetivo primario del juego es encontrar las palabras, no hay limite de intentos y descubrirás que es muy fácil.</p>
+        <p>Pero existe un objetivo secundario que es conocer palabras nuevas del castellano.</p>
+        <p>Comprobaras que efectivamente conocemos muy pocas palabras de las disponibles en el RAE, se estima que 15.000 raíces o familias de las 93.000 que existen en el RAE.</p>
+        <p>Si alguna palabra te intriga puedes consultar su significado en el RAE en línea.</p>
+    <a @onclick="()=>ayuda=false" class="btn btn-success btn-lg">¡A jugar!</a>
+</div>
+
+    </div>
+</div>
+@code {
+    Palabras _seleccion= new Palabras();
+    private bool ayuda = false;
+
+}
+
