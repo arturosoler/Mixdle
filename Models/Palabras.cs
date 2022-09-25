@@ -45,9 +45,9 @@ namespace Mixdle.Models
         public void Click(int columna,int fila)
         {
             Console.WriteLine($"c: {columna} f:{fila}");
-            if (Cuadros[columna][fila].Usada)
+            if (Cuadros[columna][fila].Usada) //está dentro de las letras acertadas hasta el momento
                 return;
-            if (Cuadros[columna][fila].Marcada)
+            if (Cuadros[columna][fila].Marcada) //quita la marca
             {
                 Cuadros[columna][fila].Marcada = false;
             }

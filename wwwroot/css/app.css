@@ -18,6 +18,9 @@ h1{
 .botonUsado {
     background-color: black;
 }
+.botonBloqueado {
+    background-color:palevioletred;
+}
 h1:focus {
     outline: none;
 }
