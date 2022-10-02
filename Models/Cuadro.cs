@@ -2,18 +2,31 @@
 {
     public class Cuadro
     {
-
-        public char Letra { get; set; }
-        public bool Marcada { get; set; }
-        public bool Usada;
-
-        public Cuadro (char letra)
+        public enum EstadoCuadro
         {
-            Letra= letra;
-            Marcada = false;
-            Usada = false;
+            Disponible,
+            AusentePalabra,
+            PresentePalabra,
+            Acertado
         }
-        public bool Disabled() => Usada;
-        public string ClaseCSS() => Usada ? "botonUsado" : Marcada ? "botonSeleccionado" : "botonActivo";
+        public char Letra { get; set; }
+        public EstadoCuadro Estado { get; set; }
+
+        public Cuadro(char letra)
+        {
+            Letra = letra;
+            Estado = EstadoCuadro.Disponible;
+        }
+        public bool Disabled() => Estado != EstadoCuadro.Disponible;
+        public string ClaseCSS() => Estado switch
+            {
+                EstadoCuadro.Disponible=>"botonDisponible",
+                EstadoCuadro.AusentePalabra=>"botonAusentePalabra",
+                EstadoCuadro.PresentePalabra=>"botonPresentePalabra",
+                EstadoCuadro.Acertado=>"botonAcertado"
+            };
+            
+            
+            //Usada ? "botonUsado" : Marcada ? "botonSeleccionado" : "botonActivo";
     }
 }

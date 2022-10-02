@@ -44,47 +44,47 @@ namespace Mixdle.Models
 
         public void Click(int columna,int fila)
         {
-            Console.WriteLine($"c: {columna} f:{fila}");
-            if (Cuadros[columna][fila].Usada) //está dentro de las letras acertadas hasta el momento
-                return;
-            if (Cuadros[columna][fila].Marcada) //quita la marca
-            {
-                Cuadros[columna][fila].Marcada = false;
-            }
-            else
+            if (Cuadros[columna][fila].Estado==Cuadro.EstadoCuadro.Disponible) //está dentro de las letras acertadas hasta el momento
             {
                 var RegexApuesta = new StringBuilder("");
                 for (int iColumna = 0; iColumna < 6; iColumna++)
                     if (iColumna == columna) //es la columna de la apuesta en curso
-                    {
                         RegexApuesta.Append(Cuadros[columna][fila].Letra);
-                        if (Cuadros[iColumna].Any(c => c.Marcada))
-                            Cuadros[iColumna].First(c => c.Marcada).Marcada = false;
-                    }
-                        
-                    else if (Cuadros[iColumna].Any(c => c.Marcada))  
+                    else if (Cuadros[iColumna].Any(c => c.Estado==Cuadro.EstadoCuadro.PresentePalabra))  
                         RegexApuesta
-                            .Append(Cuadros[iColumna].First(c => c.Marcada).Letra);
+                            .Append(Cuadros[iColumna].First(c => c.Estado == Cuadro.EstadoCuadro.PresentePalabra).Letra);
                     else RegexApuesta.Append(".");
+                //Console.WriteLine(RegexApuesta);
                 var apuesta = RegexApuesta.ToString();
                 if (Seleccion.Except(Aciertos).Any(s => Regex.IsMatch(s, apuesta)))
-                {
-                    Cuadros[columna][fila].Marcada = true;
+                {   //Ha acertado la palabra
                     if (!apuesta.Contains('.'))
-                    {
+                    {   //Era la ultima letra
                         var pal = Seleccion.First(s => Regex.IsMatch(s, apuesta));
                         Aciertos.Add(pal);
                         ContadorPalabras++;
                         //resetea 
                         for (int iCol = 0; iCol < 6; iCol++)
-                        {
-                            var c = Cuadros[iCol].First(c => c.Marcada);
-                            c.Marcada = false;
-                            c.Usada = true;
-                        }
-                    }
+                            for (int iFila = 0; iFila < 6; iFila++)
+                            if (Cuadros[iCol][iFila].Estado!=Cuadro.EstadoCuadro.Acertado)
+                            {
+                                if (Cuadros[iCol][iFila].Estado == Cuadro.EstadoCuadro.PresentePalabra ||
+                                        (columna == iCol && iFila == fila))
+                                    Cuadros[iCol][iFila].Estado = Cuadro.EstadoCuadro.Acertado;
+                                else //if (Cuadros[iCol][iFila].Estado == Cuadro.EstadoCuadro.AusentePalabra)
+                                    Cuadros[iCol][iFila].Estado = Cuadro.EstadoCuadro.Disponible;
+                            }
+                    } 
+                    else for (var iFila = 0; iFila < 6; iFila++)   //marca la fial
+                        if (Cuadros[columna][iFila].Estado != Cuadro.EstadoCuadro.Acertado)
+                            Cuadros[columna][iFila].Estado = iFila == fila ?
+                                    Cuadro.EstadoCuadro.PresentePalabra : Cuadro.EstadoCuadro.AusentePalabra;                    
+                }              
+                else //No ha acertado
+                {
+                    Cuadros[columna][fila].Estado = Cuadro.EstadoCuadro.AusentePalabra;
+                    ContadorErrores++;
                 }
-                else ContadorErrores++;
             }
         }
     }
