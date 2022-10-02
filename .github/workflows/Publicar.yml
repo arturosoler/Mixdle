@@ -20,7 +20,7 @@ jobs:
     - name: Rewrite base href
       if: success()
       uses: SteveSandersonMS/ghaction-rewrite-base-href@v1
-      withttps://github.com/arturosoler/Mixdle/tree/master/.githubh:
+      with:
         html_path: ${{ env.PUBLISH_DIR }}/index.html
         base_href: /Mixdle/
         
