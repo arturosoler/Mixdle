@@ -8,7 +8,7 @@ h1{
     color:darkblue;text-align:center
 }
 
-.botonDisponible, .botonAusentePalabra, .botonPresentePalabra,.botonAcertado {
+.botonDisponible, .botonAusentePalabra, .botonPresentePalabra,.botonAcertado, .celdaLista {
    font-weight:600;color:black;font-size:30px;width:40px;height:50px;vertical-align:middle;text-align:center;}
 .botonDisponible {
     background-color:lightblue;
@@ -21,6 +21,14 @@ h1{
 }
 .botonAcertado {
     background-color: black;
+}
+
+.celdaLista {
+    background-color:white;
+    border-color:black;
+    border-style:solid;
+    border-width:2px;
+    color: darkgreen;
 }
 
 h1:focus {

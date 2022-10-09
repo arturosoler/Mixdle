@@ -27,7 +27,6 @@
                                                 @onclick="()=>_seleccion.Click(col,lin)">
                                                 @cuadro.Letra
                                     </button>
-
                                 </td>
                             }
                         </tr>
@@ -36,7 +35,28 @@
                     </tbody>
                 </table>
             </div>
-            <ol class="list-unstyled mt-3">
+            @if (_seleccion.Aciertos.Count>0)
+            {
+                <p class="text-center text-success mt-3">Toque la palabra para ver significado</p>
+            }
+                <table style="margin-left:auto;margin-right:auto">
+                @foreach (var pal in _seleccion.Aciertos)
+                {
+                        <tr>
+                            @for (var i = 0; i < 6; i++)
+                            {
+                                <td class="celdaLista">
+                                    <a  target="_blank"
+                                        style="color:darkgreen;text-decoration:none;"
+                                        href="@(string.Format("https://dle.rae.es/{0}",pal))">
+                                        @pal[i]
+                                    </a>        
+                                </td>
+                            }
+                    </tr>
+                }
+            </table>
+@*            <ol class="list-unstyled mt-3">
                 @foreach (var pal in _seleccion.Aciertos)
                     {
                         <li class="text-success">@pal 
@@ -45,7 +65,7 @@
                             </a>
                         </li>
                 }
-            </ol>
+            </ol>*@
             }
         </div>
         <div class="col-12 @(ayuda?"":"d-none")">
@@ -58,7 +78,7 @@
         </div>
     </div>
  </div>
- <div class="col-12" style="text-align:center">
+<div class="col-12  mt-3" style="text-align:center">
             <a @onclick="()=>ayuda=!ayuda" class="btn btn-success btn-lg btn-b mx-auto">
                 @(ayuda?"¡A jugar!":"¿Cómo y por qué jugar?")
             </a>
